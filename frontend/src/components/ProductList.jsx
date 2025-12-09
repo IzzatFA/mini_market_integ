@@ -65,7 +65,11 @@ const ProductList = ({ addToCart, searchTerm }) => {
 
             {filteredProducts.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-lg shadow-sm">
-                    <img src="/empty-state.png" alt="" className="w-32 mx-auto mb-4 opacity-50 grayscale" onError={(e) => e.target.style.display = 'none'} />
+                    <img
+                        src="https://placehold.co/400x320/f3f4f6/a3a3a3?text=Produk+Kosong"
+                        alt="Tidak ditemukan"
+                        className="w-48 mx-auto mb-6 opacity-75 mix-blend-multiply"
+                    />
                     <p className="text-lg font-bold text-gray-700">Produk tidak ditemukan</p>
                     <p className="text-gray-500 mt-1 text-sm">Coba kata kunci lain atau cek ejaanmu.</p>
                 </div>
