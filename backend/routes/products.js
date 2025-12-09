@@ -16,21 +16,31 @@ const { getAllProducts, getProductById, createProduct, updateProduct, deleteProd
  *         id:
  *           type: integer
  *           description: Auto-generated ID produk
+ *           example: 1
  *         name:
  *           type: string
  *           description: Nama produk
+ *           example: "Kemeja Flanel Kotak-Kotak"
  *         price:
  *           type: number
  *           description: Harga produk
+ *           example: 150000
  *         stock:
  *           type: integer
  *           description: Stok tersedia
+ *           example: 50
  *         category:
  *           type: string
  *           description: Kategori produk
+ *           example: "Pakaian Pria"
  *         image:
  *           type: string
  *           description: URL gambar produk
+ *           example: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80"
+ *         description:
+ *           type: string
+ *           description: Deskripsi produk
+ *           example: "Kemeja flanel bahan katun adem, cocok untuk santai maupun kuliah."
  */
 
 /**

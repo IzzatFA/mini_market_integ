@@ -27,8 +27,17 @@ const { register, login } = require('../controllers/authController');
  *             properties:
  *               username:
  *                 type: string
+ *                 example: "johndoe"
  *               password:
  *                 type: string
+ *                 example: "secret123"
+ *               email:
+ *                 type: string
+ *                 example: "johndoe@example.com"
+ *               role:
+ *                 type: string
+ *                 enum: [user, admin]
+ *                 example: "user"
  *     responses:
  *       201:
  *         description: Registrasi berhasil
@@ -55,8 +64,10 @@ router.post('/register', register);
  *             properties:
  *               username:
  *                 type: string
+ *                 example: "johndoe"
  *               password:
  *                 type: string
+ *                 example: "secret123"
  *     responses:
  *       200:
  *         description: Login berhasil
