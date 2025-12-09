@@ -31,9 +31,9 @@ const ProductList = ({ addToCart, searchTerm }) => {
         setCurrentPage(1);
     }, [searchTerm]);
 
-    const filteredProducts = products.filter((product) =>
+    const filteredProducts = Array.isArray(products) ? products.filter((product) =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) : [];
 
     // Get current items
     const indexOfLastItem = currentPage * itemsPerPage;
