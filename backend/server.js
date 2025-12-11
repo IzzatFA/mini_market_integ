@@ -55,7 +55,12 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/', (req, res) => {
-    res.send('Mini Market API is running');
+    res.json({
+        message: 'Mini Market API is running',
+        version: '2.0.0',
+        security: 'Strict Auth Check Active',
+        timestamp: new Date().toISOString()
+    });
 });
 
 if (require.main === module) {
