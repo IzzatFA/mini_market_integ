@@ -137,9 +137,9 @@ const AdminPanel = () => {
         setCurrentProduct(null);
     };
 
-    const filteredProducts = products.filter(product =>
+    const filteredProducts = Array.isArray(products) ? products.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    ) : [];
 
     if (loading) return <div className="text-center p-10">Loading...</div>;
 

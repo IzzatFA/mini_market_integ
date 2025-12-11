@@ -5,7 +5,7 @@ require('dotenv').config();
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
 const supabase = createClient(process.env.SUPABASE_URL, supabaseKey);
 
-const getAllUsers = async (req, res) => {
+exports.getAllUsers = async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('users')
@@ -21,6 +21,20 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-module.exports = {
-    getAllUsers
+exports.getUserById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+        if (!data) return res.status(404).json({ error: 'User not found' });
+
+        res.json(data);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };

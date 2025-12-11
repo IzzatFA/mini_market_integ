@@ -9,6 +9,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Disable caching for all routes
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    next();
+});
+
 // Routes
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');

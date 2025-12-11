@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ShoppingCart, Search, User, LogOut, Heart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from './AuthModal';
+import { getUser } from '../services/api';
 
 const Navbar = ({ cartCount, searchTerm, setSearchTerm }) => {
     const [user, setUser] = useState(null);
@@ -11,12 +12,30 @@ const Navbar = ({ cartCount, searchTerm, setSearchTerm }) => {
     useEffect(() => {
         // Cek user dari localStorage saat pertama load
         const storedUser = localStorage.getItem('user');
+
+        const validateSession = async (userData) => {
+            if (!userData || !userData.id) return;
+            try {
+                // Verify user exists in backend with simple fetch
+                await getUser(userData.id);
+            } catch (error) {
+                console.error("Session validation failed:", error);
+                // If 404 or other error, clear session
+                localStorage.removeItem('user');
+                setUser(null);
+                window.dispatchEvent(new Event('storage'));
+                navigate('/');
+            }
+        };
+
         if (storedUser) {
             try {
-                setUser(JSON.parse(storedUser));
+                const parsedUser = JSON.parse(storedUser);
+                setUser(parsedUser);
+                validateSession(parsedUser);
             } catch (e) {
                 console.error("Invalid user data in localStorage", e);
-                localStorage.removeItem('user'); // Clean up bad data
+                localStorage.removeItem('user');
             }
         }
 

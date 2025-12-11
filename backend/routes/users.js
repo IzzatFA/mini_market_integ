@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getAllUsers } = require('../controllers/userController');
+const { getAllUsers, getUserById } = require('../controllers/userController');
 
 /**
  * @swagger
@@ -45,5 +45,6 @@ const { getAllUsers } = require('../controllers/userController');
  *         description: Server error
  */
 router.get('/', getAllUsers);
+router.get('/:id', getUserById);
 
 module.exports = router;

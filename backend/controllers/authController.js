@@ -68,19 +68,29 @@ const login = async (req, res) => {
 
         if (error) throw error;
 
-        // AUTO-SYNC: Ensure this user exists in public.users (useful for existing accounts)
-        const { error: syncError } = await supabase
+        if (error) throw error;
+
+        // STRICT CHECK: Verify user exists in public.users table
+        // Jika user dihapus dari tabel users tapi masih ada di Auth, tolak login
+        const { data: userRecord, error: userError } = await supabase
             .from('users')
-            .upsert({
-                id: data.user.id,
-                username: cleanUsername,
-                email: email,
-                role: data.user.user_metadata?.role || (cleanUsername === 'admin' ? 'admin' : 'user')
-            }, { onConflict: 'id' });
+            .select('id, role, username') // Fetch role too to ensure we have latest data
+            .eq('id', data.user.id)
+            .single();
 
-        if (syncError) console.error('Auto-sync login failed:', syncError);
+        if (userError || !userRecord) {
+            console.warn(`[Login Blocked] User ${cleanUsername} (ID: ${data.user.id}) authenticated but not found in public.users`);
+            return res.status(403).json({ error: 'Akses ditolak: Akun Anda tidak ditemukan atau telah dihapus.' });
+        }
 
-        res.status(200).json({ message: 'Login successful', session: data.session, user: data.user });
+        // Update session info from actual database record if needed
+        const finalUser = {
+            ...data.user,
+            role: userRecord.role,  // Trust DB role over metadata
+            username: userRecord.username
+        };
+
+        res.status(200).json({ message: 'Login successful', session: data.session, user: finalUser });
     } catch (error) {
         res.status(401).json({ error: error.message });
     }

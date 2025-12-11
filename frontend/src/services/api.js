@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 export const getProducts = async () => {
-    const response = await axios.get(`${API_URL}/products`);
+    const response = await axios.get(`${API_URL}/products?t=${new Date().getTime()}`);
     return response.data;
 };
 
@@ -23,12 +23,17 @@ export const register = async (credentials) => {
 };
 
 export const getOrders = async () => {
-    const response = await axios.get(`${API_URL}/orders`);
+    const response = await axios.get(`${API_URL}/orders?t=${new Date().getTime()}`);
     return response.data;
 };
 
 export const getUsers = async () => {
-    const response = await axios.get(`${API_URL}/users`);
+    const response = await axios.get(`${API_URL}/users?t=${new Date().getTime()}`);
+    return response.data;
+};
+
+export const getUser = async (id) => {
+    const response = await axios.get(`${API_URL}/users/${id}`);
     return response.data;
 };
 
@@ -48,7 +53,7 @@ export const deleteProduct = async (id) => {
 };
 
 export const getWishlist = async (userId) => {
-    const response = await axios.get(`${API_URL}/wishlist`, { params: { user_id: userId } });
+    const response = await axios.get(`${API_URL}/wishlist`, { params: { user_id: userId, t: new Date().getTime() } });
     return response.data;
 };
 
