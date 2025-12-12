@@ -38,3 +38,21 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.deleteUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Karena kita sudah punya Trigger di DB (full_sync.sql),
+        // Hapus di public.users -> OTOMATIS hapus di Auth.
+        const { error } = await supabase
+            .from('users')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        res.json({ message: 'User deleted successfully (Cascaded to Auth)' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

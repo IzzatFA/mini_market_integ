@@ -1,7 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Edit, Trash2, Package, Search, LogOut, User } from 'lucide-react';
-import { getProducts, addProduct, updateProduct, deleteProduct, getOrders, getUsers } from '../services/api';
+import { getProducts, addProduct, updateProduct, deleteProduct, getOrders, getUsers, deleteUser } from '../services/api';
+
+// ... (existing code)
+
+const handleDeleteUser = async (id) => {
+    if (window.confirm('PERINGATAN: Menghapus user ini akan menghapus semua data pesanan & wishlist mereka juga. Lanjutkan?')) {
+        try {
+            await deleteUser(id);
+            fetchUsers(); // Refresh list
+            addToast('User berhasil dihapus (Total Wipeout)', 'success');
+        } catch (error) {
+            console.error('Delete user failed', error);
+            addToast('Gagal menghapus user', 'error');
+        }
+    }
+};
+
+// ... (existing code)
+
+<tr>
+    <th className="p-4 text-sm font-semibold">ID</th>
+    <th className="p-4 text-sm font-semibold">Username</th>
+    <th className="p-4 text-sm font-semibold">Email</th>
+    <th className="p-4 text-sm font-semibold">Role</th>
+    <th className="p-4 text-sm font-semibold">Bergabung</th>
+    <th className="p-4 text-sm font-semibold text-right">Aksi</th>
+</tr>
 import { useToast } from '../context/ToastContext';
 
 const AdminPanel = () => {
@@ -350,6 +376,15 @@ const AdminPanel = () => {
                                                 </span>
                                             </td>
                                             <td className="p-4 text-gray-600">{new Date(u.created_at).toLocaleDateString('id-ID')}</td>
+                                            <td className="p-4 text-right">
+                                                <button
+                                                    onClick={() => handleDeleteUser(u.id)}
+                                                    className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                    title="Hapus User"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                     {users.length === 0 && (

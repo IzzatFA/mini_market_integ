@@ -45,6 +45,8 @@ const { getAllUsers, getUserById } = require('../controllers/userController');
  *         description: Server error
  */
 router.get('/', getAllUsers);
+router.get('/', getAllUsers);
 router.get('/:id', getUserById);
+router.delete('/:id', require('../controllers/userController').deleteUser);
 
 module.exports = router;

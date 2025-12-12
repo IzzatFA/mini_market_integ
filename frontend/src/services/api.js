@@ -52,6 +52,11 @@ export const deleteProduct = async (id) => {
     return response.data;
 };
 
+export const deleteUser = async (id) => {
+    const response = await axios.delete(`${API_URL}/users/${id}`);
+    return response.data;
+};
+
 export const getWishlist = async (userId) => {
     const response = await axios.get(`${API_URL}/wishlist`, { params: { user_id: userId, t: new Date().getTime() } });
     return response.data;
